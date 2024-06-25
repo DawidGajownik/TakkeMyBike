@@ -1,38 +1,80 @@
-# Wypożyczalnia rowerów - Aplikacja webowa
+# Platforma Wypożyczania Rowerów przez Osoby Prywatne
 
 ## Opis projektu
 
-Projekt aplikacji webowej do wypożyczania rowerów, oparty na technologiach Spring MVC i Hibernate.
+Celem projektu jest stworzenie aplikacji, która umożliwia osobom prywatnym wypożyczanie swoich rowerów innym użytkownikom. Aplikacja pozwala na rejestrację rowerów, przeglądanie dostępnych rowerów w okolicy, wypożyczanie rowerów, a także zarządzanie rezerwacjami i płatnościami.
 
-## Funkcjonalności
+## Kluczowe funkcjonalności
 
-- Dodawanie nowych rowerów do wypożyczalni z informacjami takimi jak marka, model, opis, cena za dzień oraz minimalna długość wypożyczenia.
-- Przesyłanie zdjęcia roweru wraz z informacjami.
-- Rejestracja użytkowników oraz możliwość logowania.
+### Rejestracja i logowanie użytkowników:
 
-## Technologie użyte
+- Użytkownicy mogą się rejestrować, logować i wylogowywać.
+- Hasła są bezpiecznie przechowywane z użyciem szyfrowania.
 
-- Java
-- Spring MVC
-- Hibernate
-- HTML/CSS
-- Bootstrap
-- Maven
+### Dodawanie rowerów:
 
-## Uruchomienie projektu
+- Użytkownicy mogą dodawać swoje rowery do bazy, podając szczegóły takie jak marka, model, typ roweru, stan techniczny, zdjęcia, itp.
+- Możliwość ustalenia ceny.
 
-### Wymagania
+### Przeglądanie i wyszukiwanie rowerów:
 
-- Java 11+
-- Apache Maven
-- MySQL
+- Użytkownicy mogą przeglądać dostępne rowery.
+- Możliwość filtrowania wyników według typu roweru, cenyitp.
 
-### Konfiguracja bazy danych
+### Wypożyczanie rowerów:
 
-1. Utwórz bazę danych MySQL o nazwie `bike_rental`.
-2. Zaktualizuj plik `application.properties` zgodnie z ustawieniami Twojej bazy danych:
+- Użytkownicy mogą rezerwować rowery na określony czas.
 
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/bike_rental?useSSL=false&serverTimezone=UTC
-   spring.datasource.username=root
-   spring.datasource.password=your_password
+### Zarządzanie rezerwacjami:
+
+- Użytkownicy mogą przeglądać swoje aktywne i zakończone rezerwacje.
+- Właściciele rowerów mogą przeglądać rezerwacje swoich rowerów i akceptować lub odrzucać żądania wypożyczeń.
+
+## Technologie
+
+- Java: główny język programowania.
+- Hibernate: ORM do zarządzania bazą danych.
+- MySQL: baza danych do przechowywania informacji.
+
+## Dodatkowe funkcjonalności (opcjonalnie)
+
+- Oceny i recenzje: użytkownicy mogą oceniać rowery i dodawać recenzje po zakończeniu wypożyczenia.
+- Geolokalizacja: wyświetlanie lokalizacji rowerów na mapie (np. Google Maps API).
+- Chat: wbudowany system wiadomości do komunikacji między właścicielem a wypożyczającym.
+
+## Struktura projektu
+
+### Backend:
+
+- Konfiguracja projektu Spring.
+- Encje dla użytkowników, rowerów, rezerwacji, płatności.
+- Repozytoria i serwisy do zarządzania danymi.
+- Kontrolery do obsługi żądań HTTP.
+
+### Frontend:
+
+- Widoki JSP
+- Integracja z Google Maps API lub Leaflet.js do wyświetlania lokalizacji rowerów.
+
+### Baza danych:
+
+- Projektowanie schematu bazy danych.
+- Tworzenie tabel i relacji za pomocą Hibernate.
+
+## Etapy realizacji
+
+### Projektowanie:
+
+- Projektowanie interfejsu użytkownika.
+- Projektowanie bazy danych.
+
+### Implementacja:
+
+- Tworzenie backendu w Spring Boot.
+- Implementacja frontendu.
+- Integracja z bazą danych.
+
+
+## Autor
+
+Dawid Gajownik - [Twój GitHub](https://github.com/DawidGajownik)
