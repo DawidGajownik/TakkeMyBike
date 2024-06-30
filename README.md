@@ -13,26 +13,25 @@ Celem projektu jest stworzenie aplikacji, która umożliwia osobom prywatnym wyp
 
 ### Dodawanie rowerów:
 
-- Użytkownicy mogą dodawać swoje rowery do bazy, podając szczegóły takie jak marka, model, typ roweru, stan techniczny, zdjęcia, itp.
-- Możliwość ustalenia ceny.
+- Użytkownicy mogą dodawać swoje rowery do bazy, podając szczegóły takie jak marka, model, typ roweru, stan techniczny, zdjęcia, i podawać adres pod którym są dostępne
+- Możliwość ustalenia ceny i minimalnego czasu wynajmu.
 
 ### Przeglądanie i wyszukiwanie rowerów:
 
 - Użytkownicy mogą przeglądać dostępne rowery.
-- Możliwość filtrowania wyników według typu roweru, cenyitp.
-
-### Wypożyczanie rowerów:
-
-- Użytkownicy mogą rezerwować rowery na określony czas.
+- Uzytkownicy mogą przeglądać swoje rowery lub konkretnego użytkownika.
+- Możliwość filtrowania wyników według typu roweru, ceny, odległości od podanego adresu itp.
 
 ### Zarządzanie rezerwacjami:
-
+- Użytkownicy mogą rezerwować rowery na określony czas.
+- Użytkownicy mogą anulować rezerwację.
 - Użytkownicy mogą przeglądać swoje aktywne i zakończone rezerwacje.
 - Właściciele rowerów mogą przeglądać rezerwacje swoich rowerów i akceptować lub odrzucać żądania wypożyczeń.
 
 ## Technologie
 
 - Java: główny język programowania.
+- Spring MVC: 
 - Hibernate: ORM do zarządzania bazą danych.
 - MySQL: baza danych do przechowywania informacji.
 
@@ -47,14 +46,14 @@ Celem projektu jest stworzenie aplikacji, która umożliwia osobom prywatnym wyp
 ### Backend:
 
 - Konfiguracja projektu Spring.
-- Encje dla użytkowników, rowerów, rezerwacji, płatności.
+- Encje dla użytkowników, rowerów, rezerwacji, wiadomości, adresów.
 - Repozytoria i serwisy do zarządzania danymi.
 - Kontrolery do obsługi żądań HTTP.
 
 ### Frontend:
 
 - Widoki JSP
-- Integracja z Google Maps API lub Leaflet.js do wyświetlania lokalizacji rowerów.
+- Integracja z Google Maps API do wyświetlania lokalizacji rowerów.
 
 ### Baza danych:
 
@@ -77,4 +76,4 @@ Celem projektu jest stworzenie aplikacji, która umożliwia osobom prywatnym wyp
 
 ## Autor
 
-Dawid Gajownik - [Twój GitHub](https://github.com/DawidGajownik)
+Dawid Gajownik - [Mój GitHub](https://github.com/DawidGajownik)
