@@ -3,6 +3,7 @@ package pl.coderslab.bike;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import pl.coderslab.address.Address;
 import pl.coderslab.user.User;
 
 import javax.persistence.*;
@@ -38,14 +39,11 @@ public class Bike {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     @Lob
     private byte[] image;
-
-    private String address;
-    private String city;
-    private String postalCode;
-    private double latitude;
-    private double longitude;
-
 
 }

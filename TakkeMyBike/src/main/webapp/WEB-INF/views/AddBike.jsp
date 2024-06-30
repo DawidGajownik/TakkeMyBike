@@ -26,16 +26,24 @@
             <form:input path="description" class="form-control" id="description" required="true"/>
         </div>
         <div class="form-group">
-            <label for="address">Adres:</label>
-            <form:input path="address" class="form-control" id="address" required="true"/>
+            <label for="street">Ulica:</label>
+            <form:input path="address.street" class="form-control" id="street" required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="houseNumber">Numer domu:</label>
+            <form:input path="address.streetNumber" class="form-control" id="houseNumber" required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="apartmentNumber">Numer mieszkania:</label>
+            <form:input path="address.apartmentNumber" class="form-control" id="apartmentNumber"/>
         </div>
         <div class="form-group">
             <label for="city">Miasto:</label>
-            <form:input path="city" class="form-control" id="city" required="true"/>
+            <form:input path="address.city" class="form-control" id="city" required="true"/>
         </div>
         <div class="form-group">
             <label for="postalCode">Kod pocztowy:</label>
-            <form:input path="postalCode" class="form-control" id="postalCode" required="true"/>
+            <form:input path="address.postalCode" class="form-control" id="postalCode"/>
         </div>
         <div class="form-group">
             <label for="pricePerDay">Cena za dzień:</label>

@@ -59,7 +59,7 @@ public class MessageController {
                 .sorted(Comparator.comparing(Message::getSendTime))
                 .map(s -> {
                     try {
-                        s.setContent(Crypt.decrypt(s.getContent()));
+                        s.setContent(Crypt.decrypt(s.getContent(), s.getSender().getPassword(), s.getReceiver().getPassword()));
                         return s;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -78,13 +78,14 @@ public class MessageController {
         if (receiverOpt.isEmpty() || senderOpt.isEmpty()){
             return "redirect:/";
         }
-        message.setSendTime(LocalDateTime.now());
-        message.setContent(Crypt.encrypt(message.getContent()));
+        User sender = senderOpt.get();
         User receiver = receiverOpt.get();
+        message.setSendTime(LocalDateTime.now());
+        message.setContent(Crypt.encrypt(message.getContent(), sender.getPassword(), receiver.getPassword()));
         message.setReceiver(receiver);
         receiver.setHasMessageNotification(true);
         userService.save(receiver);
-        message.setSender(senderOpt.get());
+        message.setSender(sender);
         messageService.save(message);
         return "redirect:/message/user/"+receiverId;
     }

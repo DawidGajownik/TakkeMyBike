@@ -11,6 +11,8 @@ import pl.coderslab.user.User;
 import pl.coderslab.user.UserService;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Optional;
 
 @Slf4j
@@ -53,7 +55,7 @@ public class BikeController {
     }
 
     @PostMapping("/save")
-    public String save (@ModelAttribute Bike bike, HttpSession session, Model model) {
+    public String save (@ModelAttribute Bike bike, HttpSession session, Model model) throws IOException {
         Long id = Long.valueOf(session.getAttribute("id").toString());
         Optional <User> userOptional = userService.findById(id);
         if (userOptional.isEmpty()){

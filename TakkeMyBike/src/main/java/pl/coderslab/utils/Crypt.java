@@ -1,44 +1,31 @@
 package pl.coderslab.utils;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class Crypt {
 
-    private static SecretKey secretKey;
-
-    static {
-        try {
-            // Inicjalizacja klucza AES
-            secretKey = KeyGenerator.getInstance("AES").generateKey();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static SecretKey getKey(String sender, String receiver){
+        byte[] keyBytes = (sender+receiver).getBytes(StandardCharsets.UTF_8);
+        byte[] keyBytesPadded = new byte[16];
+        System.arraycopy(keyBytes, 0, keyBytesPadded, 0, Math.min(keyBytes.length, 16));
+        return new SecretKeySpec(keyBytesPadded, "AES");
     }
 
-    /**
-     * Szyfruje podaną wiadomość przy użyciu AES.
-     * @param message Wiadomość do zaszyfrowania
-     * @return Zaszyfrowana wiadomość w postaci Base64
-     */
-    public static String encrypt(String message) throws Exception {
+    public static String encrypt(String message, String sender, String receiver) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        cipher.init(Cipher.ENCRYPT_MODE, getKey(sender, receiver));
         byte[] encryptedText = cipher.doFinal(message.getBytes("UTF-8"));
         return Base64.getEncoder().encodeToString(encryptedText);
     }
 
-    /**
-     * Deszyfruje podaną zaszyfrowaną wiadomość przy użyciu AES.
-     * @param encryptedMessage Zaszyfrowana wiadomość w formacie Base64
-     * @return Odszyfrowana wiadomość
-     */
-    public static String decrypt(String encryptedMessage) throws Exception {
+    public static String decrypt(String encryptedMessage, String sender, String receiver) throws Exception {
         byte[] decodedEncryptedText = Base64.getDecoder().decode(encryptedMessage);
         Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        cipher.init(Cipher.DECRYPT_MODE, getKey(sender, receiver));
         byte[] decryptedText = cipher.doFinal(decodedEncryptedText);
         return new String(decryptedText, "UTF-8");
     }
