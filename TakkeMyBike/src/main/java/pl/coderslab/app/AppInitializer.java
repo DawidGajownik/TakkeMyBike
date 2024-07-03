@@ -6,6 +6,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.FilterRegistration;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
@@ -28,6 +29,12 @@ public class AppInitializer implements WebApplicationInitializer {
         fr.setInitParameter("encoding", "UTF-8");
         fr.setInitParameter("forceEncoding", "true");
         fr.addMappingForUrlPatterns(null, true, "/*");
-    }
 
+        // Konfiguracja obsługi plików multipart
+        servlet.setMultipartConfig(getMultipartConfigElement());
+    }
+    private MultipartConfigElement getMultipartConfigElement() {
+        String location = "C:/tmp/uploads";
+        return new MultipartConfigElement(location, 2097152, 4194304, 0); // Ustawienia dla multipart
+    }
 }

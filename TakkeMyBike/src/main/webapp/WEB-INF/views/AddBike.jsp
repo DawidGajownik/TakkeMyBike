@@ -13,7 +13,7 @@
 
 <div class="container mt-5">
     <h2>Dodaj Rower</h2>
-    <form:form action="/bike/save" modelAttribute="bike" method="post">
+    <form:form action="/bike/save" modelAttribute="bike" method="post" enctype="multipart/form-data">
 
         <form:hidden path="id" id="id"/>
 

@@ -1,15 +1,15 @@
 package pl.coderslab.rent;
 
 import org.springframework.stereotype.Service;
+import pl.coderslab.rating.Rating;
+import pl.coderslab.rating.RatingService;
 import pl.coderslab.user.User;
 import pl.coderslab.user.UserRepository;
 
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -19,15 +19,27 @@ public class RentService {
 
     private final RentRepository rentRepository;
 
+    private final RatingService ratingService;
+
     public List<Rent> myRents (Long id) {
         return rentRepository.findAllByUserId(id);
+    }
+    public Map<Rent, Rating> rentsWithMyRatings (List <Rent> myRents, Long id) {
+        List <Rating> myRatings = ratingService.getAllByRaterId(id);
+        Map <Rent, Rating> myRentsWithMyRatings = new LinkedHashMap<>();
+        for (int i = 0; i < myRents.size(); i++) {
+            Rent rent = myRents.get(i);
+            myRentsWithMyRatings.put(rent, ratingService.myRatingToThisRent(id, rent));
+        }
+        return myRentsWithMyRatings;
     }
     public List<Rent> myOwns (Long id) {
         return rentRepository.findAllByOwnerId(id);
     }
-    public RentService(UserRepository userRepository, RentRepository rentRepository) {
+    public RentService(UserRepository userRepository, RentRepository rentRepository, RatingService ratingService) {
         this.userRepository = userRepository;
         this.rentRepository = rentRepository;
+        this.ratingService = ratingService;
     }
 
     public List<Rent>all () {

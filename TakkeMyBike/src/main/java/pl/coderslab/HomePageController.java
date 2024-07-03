@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.bike.Bike;
 import pl.coderslab.bike.BikeService;
+import pl.coderslab.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +23,13 @@ import java.nio.file.Path;
 public class HomePageController {
 
     private final BikeService bikeService;
+    private final UserService userService;
 
     @GetMapping()
-    public String HomePage (Model model, Bike bike) {
+    public String HomePage (Model model, Bike bike, HttpSession session) {
+        if (session.getAttribute("id")!=null) {
+            userService.refreshNotifications(session);
+        }
         model.addAttribute("bike", bikeService.findAll());
         return "HomePage";
     }

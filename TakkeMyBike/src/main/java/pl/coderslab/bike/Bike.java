@@ -46,4 +46,6 @@ public class Bike {
     @Lob
     private byte[] image;
 
+    private String base64Image;
+
 }

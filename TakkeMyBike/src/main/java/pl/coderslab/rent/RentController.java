@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.bike.Bike;
 import pl.coderslab.bike.BikeService;
+import pl.coderslab.rating.Rating;
+import pl.coderslab.rating.RatingService;
 import pl.coderslab.user.User;
 import pl.coderslab.user.UserService;
 
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -27,21 +30,19 @@ public class RentController {
     private final RentService rentService;
     private final BikeService bikeService;
     private final UserService userService;
+    private final RatingService ratingService;
 
     @GetMapping("/bike/{id}")
     public String showRentForm(@PathVariable Long id, Model model, HttpSession session) {
+        if (!userService.isUserLogged(session)) return "redirect:/login";
         List<Rent> rents = rentService.getRentsForBikeId(id);
-        Long userId = (Long) session.getAttribute("id");
-        if (userId == null) {
-            return "redirect:/login";
-        }
-
         Optional<Bike> bikeOptional = bikeService.findById(id);
         if (bikeOptional.isEmpty()) {
             model.addAttribute("error", "Rower nie został znaleziony");
             return "redirect:/bike";
         }
         List<LocalDate> disabledDates = rentService.getDisabledDatesForBike(id);
+        userService.refreshNotifications(session);
         model.addAttribute("rents", rents);
         model.addAttribute("disabledDates", disabledDates);
         model.addAttribute("bike", bikeOptional.get());
@@ -51,17 +52,10 @@ public class RentController {
 
     @PostMapping
     public String rentBike(@ModelAttribute Rent rent, HttpSession session, Model model, HttpServletRequest request) {
-        if (session.getAttribute("id") == null) {
-            return "redirect:/login";
-        }
+        if (!userService.isUserLogged(session)) return "redirect:/login";
         Optional<Bike> bikeOptional = bikeService.findById(Long.valueOf(request.getParameter("bikeId")));
         if (bikeOptional.isEmpty()) {
             model.addAttribute("error", "Rower nie został znaleziony");
-            return "redirect:/bike";
-        }
-        Optional <User> userOptional = userService.findById(Long.valueOf(session.getAttribute("id").toString()));
-        if (userOptional.isEmpty()) {
-            model.addAttribute("error", "Uzytkownik nie został odnaleziony");
             return "redirect:/bike";
         }
         StringBuilder sb = new StringBuilder();
@@ -91,6 +85,7 @@ public class RentController {
         rent.setOwner(owner);
         rent.setStatus(0);
         rent.setDuration(duration);
+        Optional<User> userOptional = userService.findById(Long.valueOf(session.getAttribute("id").toString()));
         rent.setUser(userOptional.get());
         rent.setBike(bike);
         owner.setHasRentNotifications(true);
@@ -101,23 +96,33 @@ public class RentController {
     }
     @GetMapping
     public String getRequests (Model model, HttpSession session) {
-        Long id = Long.valueOf(session.getAttribute("id").toString());
-        Optional <User> userOptional = userService.findById(id);
+        if (session.getAttribute("id") == null) {
+            return "redirect:/login";
+        }
+        Long loggedUserId = Long.valueOf(session.getAttribute("id").toString());
+        Optional <User> userOptional = userService.findById(loggedUserId);
         if (userOptional.isEmpty()) {
             return "redirect:/login";
         }
         User user = userOptional.get();
+        Map <Rent, Rating> rentRatingMap = rentService.rentsWithMyRatings(rentService.myRents(loggedUserId), loggedUserId);
         user.setHasReservationNotifications(false);
         session.setAttribute("hasReservationNotifications", user.isHasReservationNotifications());
         userService.save(user);
+        userService.refreshNotifications(session);
+        model.addAttribute("ratings",rentRatingMap);
+        model.addAttribute("now", LocalDate.now());
         model.addAttribute("owner", false);
-        model.addAttribute("reservations", rentService.myRents(id));
+        model.addAttribute("reservations", rentRatingMap);
         return "Reservations";
     }
     @GetMapping("/my-dashboard")
     public String ownerDashboard (Model model, HttpSession session) {
-        Long id = Long.valueOf(session.getAttribute("id").toString());
-        Optional <User> userOptional = userService.findById(id);
+        if (session.getAttribute("id") == null) {
+            return "redirect:/login";
+        }
+        Long loggedUserId = Long.valueOf(session.getAttribute("id").toString());
+        Optional <User> userOptional = userService.findById(loggedUserId);
         if (userOptional.isEmpty()) {
             return "redirect:/login";
         }
@@ -125,22 +130,29 @@ public class RentController {
         user.setHasRentNotifications(false);
         session.setAttribute("hasRentNotifications", user.isHasRentNotifications());
         userService.save(user);
+        userService.refreshNotifications(session);
+        var myOwns = rentService.myOwns(loggedUserId).stream().sorted((s1,s2) -> s2.getId().compareTo(s1.getId())).toList();
+        Map <Rent, Rating> rentRatingMap = rentService.rentsWithMyRatings(myOwns, loggedUserId);
+        model.addAttribute("now", LocalDate.now());
         model.addAttribute("owner", true);
-        model.addAttribute("reservations", rentService.myOwns(id));
+        model.addAttribute("reservations", rentRatingMap);
         return "Reservations";
     }
     @PostMapping("/cancel/{id}")
-    public String cancel (@PathVariable Long id) {
+    public String cancel (@PathVariable Long id, HttpSession session) {
+        if (!userService.isUserLogged(session)) return "redirect:/login";
         Rent rent = rentService.get(id);
         User owner = rent.getOwner();
         owner.setHasRentNotifications(true);
         userService.save(owner);
         rent.setStatus(3);
         rentService.update(rent);
+        userService.refreshNotifications(session);
         return "redirect:/rent";
     }
     @PostMapping("/accept/{id}")
-    public String accept (@PathVariable Long id) {
+    public String accept (@PathVariable Long id, HttpSession session) {
+        if (!userService.isUserLogged(session)) return "redirect:/login";
         Rent rentProcessed = rentService.get(id);
         List <LocalDate> datesProcessed = rentService.getDatesFromRent(rentProcessed);
         List <Rent> rentList = rentService.getRentsForBikeId(rentProcessed.getBike().getId());
@@ -161,16 +173,19 @@ public class RentController {
         userService.save(user);
         rentProcessed.setStatus(2);
         rentService.update(rentProcessed);
+        userService.refreshNotifications(session);
         return "redirect:/rent/my-dashboard";
     }
     @PostMapping("/deny/{id}")
-    public String deny (@PathVariable Long id) {
+    public String deny (@PathVariable Long id, HttpSession session) {
+        if (!userService.isUserLogged(session)) return "redirect:/login";
         Rent rent = rentService.get(id);
         rent.setStatus(1);
         User user = rent.getUser();
         user.setHasReservationNotifications(true);
         userService.save(user);
         rentService.update(rent);
+        userService.refreshNotifications(session);
         return "redirect:/rent/my-dashboard";
     }
     public boolean isBetween (LocalDate day, LocalDate start, LocalDate end) {

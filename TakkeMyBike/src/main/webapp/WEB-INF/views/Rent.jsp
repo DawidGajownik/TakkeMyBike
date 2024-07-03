@@ -17,7 +17,9 @@
     <h2>Wypożycz Rower</h2>
     <div class="row">
         <div class="col-md-4">
-            <img src="${pageContext.request.contextPath}/images/rower.jpg" alt="Bike Image" class="img-fluid"/>
+            <c:if test="${not empty bike.base64Image}">
+                <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
+            </c:if>
         </div>
         <div class="col-md-8">
             <h4><c:out value="${bike.title}"/></h4>

@@ -72,7 +72,9 @@
             <c:forEach var="bike" items="${bike}">
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <img src="${pageContext.request.contextPath}/images/rower.jpg" class="card-img-top" alt="Rower 1">
+                        <c:if test="${not empty bike.base64Image}">
+                            <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
+                        </c:if>
                         <div class="card-body">
                             <h5 class="card-title">${bike.title}</h5>
                             <p class="card-text">${bike.description}</p>

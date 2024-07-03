@@ -24,21 +24,22 @@ public class MessageController {
 
     @GetMapping
     public String messageCenter(HttpSession session, Model model){
-        if (getLoggedUser(session, model)) return "redirect:/";
+        if (getLoggedUser(session, model)) return "redirect:/login";
         return "Messages";
     }
 
     private boolean getLoggedUser(HttpSession session, Model model) {
-        Long id = Long.valueOf(session.getAttribute("id").toString());
-        Optional<User> loggedUserOpt = userService.findById(id);
-        if (loggedUserOpt.isEmpty()){
+        if (!userService.isUserLogged(session)) return true;
+        Long loggedUserId = Long.valueOf(session.getAttribute("id").toString());
+        Optional <User> userOptional = userService.findById(loggedUserId);
+        if (userOptional.isEmpty()) {
             return true;
         }
-        User loggedUser = loggedUserOpt.get();
+        User loggedUser = userOptional.get();
         getMyInterlocutors(model,loggedUser);
         loggedUser.setHasMessageNotification(false);
         userService.save(loggedUser);
-        session.setAttribute("hasMessageNotification", loggedUser.isHasMessageNotification());
+        userService.refreshNotifications(session);
         return false;
     }
 
@@ -72,6 +73,7 @@ public class MessageController {
     }
     @PostMapping("/send")
     public String post (@ModelAttribute Message message, @RequestParam("receiverId") Long receiverId, HttpSession session) throws Exception {
+        if (!userService.isUserLogged(session)) return "redirect:/login";
         Long senderId = Long.valueOf(session.getAttribute("id").toString());
         Optional<User> senderOpt = userService.findById(senderId);
         Optional<User> receiverOpt = userService.findById(receiverId);
