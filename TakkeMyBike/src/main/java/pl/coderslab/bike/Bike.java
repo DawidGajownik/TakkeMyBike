@@ -46,6 +46,7 @@ public class Bike {
     @Lob
     private byte[] image;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String base64Image;
 
 }

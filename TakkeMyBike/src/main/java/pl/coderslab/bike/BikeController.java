@@ -66,7 +66,7 @@ public class BikeController {
     @PostMapping("/save")
     public String save (@ModelAttribute Bike bike, HttpSession session) throws IOException {
         if (!userService.isUserLogged(session)) return "redirect:/login";
-        bike.setBase64Image(Base64.getEncoder().encodeToString(bike.getImage()));
+        //bike.setBase64Image(Base64.getEncoder().encodeToString(bike.getImage()));
         bike.setOwner(userService.findById(Long.valueOf(session.getAttribute("id").toString())).get());
         bikeService.save(bike);
         return "redirect:/";

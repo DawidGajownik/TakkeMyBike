@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,11 @@ public class BikeService {
     }
 
     public List<Bike> findAll() {
-        return bikeRepository.findAll();
+        List <Bike> bikes = bikeRepository.findAll();
+        for (Bike bike : bikes) {
+            setImage(bike);
+        }
+        return bikes;
     }
 
     public List<Bike> findAllByOwner(User user) {
@@ -56,5 +61,13 @@ public class BikeService {
 
     public Optional<Bike> findById(Long id) {
         return bikeRepository.findById(id);
+    }
+    private Bike setImage (Bike bike) {
+        byte[] imageBytes = bike.getImage();
+        if (imageBytes != null) {
+           String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+           bike.setBase64Image(base64Image);
+        }
+        return bike;
     }
 }
