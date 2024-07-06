@@ -64,34 +64,6 @@ public class BikeController {
         return "AddBike";
     }
 
-    @GetMapping("/asdasd")
-    public String showBikeList(HttpSession session,
-                               @RequestParam(required = false) String search,
-                               @RequestParam(required = false) Integer minPrice,
-                               @RequestParam(required = false) Integer maxPrice,
-                               @RequestParam(required = false) String owner,
-                               @RequestParam(required = false) String address,
-                               @RequestParam(required = false) Integer maxDistance,
-                               @RequestParam(required = false) Integer minRentDays,
-                               @RequestParam(required = false) String startDate,
-                               @RequestParam(required = false) String endDate,
-                               @RequestParam(required = false) String sort,
-                               Model model) {
-
-//        List<Bike> bikes = bikeService.findBikesWithFilters(search, minPrice, maxPrice, owner, address,
-//                maxDistance, minRentDays, startDate, endDate, sort);
-
-//        model.addAttribute("bikes", bikes);
-
-
-        model.addAttribute("rents", rentService.all());
-
-
-        model.addAttribute("id", Long.valueOf(session.getAttribute("id").toString())); // Dodajemy id użytkownika z sesji
-
-        return "bike/list"; // Zwracamy nazwę widoku JSP
-    }
-
     @PostMapping("/save")
     public String save (@ModelAttribute Bike bike, HttpSession session) throws IOException {
         if (!userService.isUserLogged(session)) return "redirect:/login";
@@ -172,7 +144,6 @@ public class BikeController {
         }
         Map <Bike, Double> bikeDoubleMap = bikeService.findAllForUserWithFilters(search, minPrice, maxPrice, owner, address, maxDistance, minRentDays, startDate, endDate, sort, userOptional.get().getId());
         userService.refreshNotifications(session);
-        //model.addAttribute("rentedBikesIds", rentService.all().stream().map(Rent::getId));
         model.addAttribute("rents", rentService.all());
         model.addAttribute("bike", bikeDoubleMap);
         return "Bikes";

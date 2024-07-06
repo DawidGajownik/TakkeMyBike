@@ -2,7 +2,6 @@ package pl.coderslab.rating;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.rent.Rent;
-import pl.coderslab.user.User;
 
 import javax.transaction.Transactional;
 import java.util.List;

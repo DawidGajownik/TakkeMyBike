@@ -87,7 +87,4 @@ public class RentService {
     public void update (Rent rent) {
         rentRepository.save(rent);
     }
-    public void delete (Long id) {
-        rentRepository.deleteById(id);
-    }
 }

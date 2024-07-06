@@ -3,7 +3,6 @@ package pl.coderslab.rent;
 import lombok.Getter;
 import lombok.Setter;
 import pl.coderslab.bike.Bike;
-import pl.coderslab.rating.Rating;
 import pl.coderslab.user.User;
 
 import javax.persistence.*;

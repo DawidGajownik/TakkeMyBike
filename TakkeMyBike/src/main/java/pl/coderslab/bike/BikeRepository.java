@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface BikeRepository extends JpaRepository <Bike, Long> {
-    List<Bike> findAllByOwner (User user);
+    List<Bike> findAllByOwner(User user);
 
     @Query("""
             select distinct b from Bike b left join b.rents r where
@@ -32,7 +32,6 @@ public interface BikeRepository extends JpaRepository <Bike, Long> {
             or (:startDate <= r2.startDate and :endDate >= r2.endDate))))
             
             """)
-
     List<Bike> findAllWithFilters(@Param("search") String search,
                                   @Param("minPrice") Double minPrice,
                                   @Param("maxPrice") Double maxPrice,
@@ -40,9 +39,4 @@ public interface BikeRepository extends JpaRepository <Bike, Long> {
                                   @Param("minRentDays") Integer minRentDays,
                                   @Param("startDate") LocalDate startDate,
                                   @Param("endDate") LocalDate endDate);
-
-//    ;
-//                                  @Param("address") String address,
-//                                  @Param("maxDistance") Integer maxDistance,
-
 }

@@ -1,12 +1,10 @@
 package pl.coderslab.user;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.rating.Rating;
 import pl.coderslab.rating.RatingService;
 import pl.coderslab.utils.BCrypt;
 import javax.servlet.http.HttpSession;

@@ -2,7 +2,6 @@ package pl.coderslab.user;
 
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.Optional;
