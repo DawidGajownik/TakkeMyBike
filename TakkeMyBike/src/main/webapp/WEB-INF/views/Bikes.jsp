@@ -143,7 +143,9 @@
                                 <p><c:out value="${bike.getKey().description}"/></p>
                                 <p><strong>Cena za dzień: </strong><c:out value="${bike.getKey().pricePerDay}"/> PLN</p>
                                 <p><strong>Minimalny czas wynajmu: </strong><c:out value="${bike.getKey().minRentDays}"/> dni</p>
-                                <p><strong>Właściciel: </strong><a href="<c:url value='/user/${bike.getKey().owner.id}'/>"><c:out value="${bike.getKey().owner.login}"/></a></p>
+                                <c:if test="${PageStatus.equals('Wszystkie rowery')}">
+                                    <p><strong>Właściciel: </strong><a href="<c:url value='/user/${bike.getKey().owner.id}'/>"><c:out value="${bike.getKey().owner.login}"/></a></p>
+                                </c:if>
                                 <c:if test="${bike.getValue()!=null}">
                                     <p><strong>Od Ciebie: </strong>${bike.getValue()}km</p>
                                 </c:if>

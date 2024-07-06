@@ -86,6 +86,9 @@ public class BikeController {
                             @RequestParam(required = false) String endDate,
                             @RequestParam(required = false) String sort) throws IOException {
         if (!userService.isUserLogged(session)) return "redirect:/login";
+        if (Long.valueOf(session.getAttribute("id").toString()).equals(id)) {
+            return "redirect:/bike/mine";
+        }
         Optional <User> userOptional = userService.findById(id);
         model.addAttribute("PageStatus","Rowery użytkownika "+ userOptional.get().getLogin());
         return getUserBikes(model, userOptional, session, search, minPrice, maxPrice, owner, address,

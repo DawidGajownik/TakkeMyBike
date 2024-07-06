@@ -106,7 +106,7 @@ public class BikeService {
             if (sort.equals("distanceAsc")) {
                 List<Map.Entry<Bike,Double>> toSort = new ArrayList<>(bikesMap.entrySet());
                 toSort.sort((s1,s2)->{
-                    if(s1!=null&&s2!=null) {
+                    if(s1.getValue()!=null&&s2.getValue()!=null) {
                         return s1.getValue().compareTo(s2.getValue());
                     }
                     return 0;
@@ -120,7 +120,7 @@ public class BikeService {
             if (sort.equals("distanceDesc")) {
                 List<Map.Entry<Bike,Double>> toSort = new ArrayList<>(bikesMap.entrySet());
                 toSort.sort((s1,s2)->{
-                    if(s1!=null&&s2!=null) {
+                    if(s1.getValue()!=null&&s2.getValue()!=null) {
                         return s2.getValue().compareTo(s1.getValue());
                     }
                     return 0;

@@ -79,7 +79,7 @@
                             <h5><a href="/bike/details/${bike.id}">${bike.title}</a></h5>
                             <p class="card-text">${bike.description}</p>
                             <p class="card-text">Cena: ${bike.pricePerDay} PLN/dzień</p>
-                            <a href="#" class="btn btn-primary">Wypożycz</a>
+                            <a href="/rent/bike/${bike.id}" class="btn btn-primary">Wypożycz</a>
                         </div>
                     </div>
                 </div>
