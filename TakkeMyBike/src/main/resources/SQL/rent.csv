@@ -1,0 +1,3 @@
+#,id,duration,endDate,startDate,status,bike_id,owner_id,user_id
+1,1,16,2024-07-18,2024-07-03,2,1,1,2
+2,2,22,2024-07-26,2024-07-05,1,1,1,3

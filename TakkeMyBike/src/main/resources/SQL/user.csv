@@ -1,0 +1,4 @@
+#,id,description,email,firstName,hasMessageNotification,hasRentNotifications,hasReservationNotifications,lastName,level,login,password,rentFromOthers,rentToOthers,telephoneNumber
+1,1,12312,dawidgajownik6@gmail.com,Dawid,false,false,false,Gajownik,0,dawidgajownik6@gmail.com,$2a$10$JNgIfi09DjZqHe/.54UDKOlY7.UuO5lgQiZEbd1RUsjn6X.NZxLnC,true,true,531401474
+2,2,"",speereethoose@o2.pl,Diwad,false,false,false,Kinwojag,0,Gaju,$2a$10$JX7HbW7ZDOsfM1PDmmswKeJegMOHgck6ycrFM1s/fahmbyQ/d5cmC,true,false,512308022
+3,3,qqqqqqqqqqqqqqqqqqqqqq,manfreddo@wp.pl,Teresa,false,false,false,Gajownik,0,Manfred,$2a$10$9v6eMtIHDsr8N2lYERdY7OAwyrN8q1YWszF3ffJebZ7l02Q3AJ1c.,true,true,512308022
