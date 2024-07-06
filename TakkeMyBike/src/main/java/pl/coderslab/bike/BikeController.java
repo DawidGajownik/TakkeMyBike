@@ -102,15 +102,36 @@ public class BikeController {
         return "redirect:/";
     }
     @GetMapping("/user/{id}")
-    public String userBikes(@PathVariable Long id, Model model, HttpSession session) {
+    public String userBikes(@PathVariable Long id, Model model, HttpSession session,
+                            @RequestParam(required = false) String search,
+                            @RequestParam(required = false) Double minPrice,
+                            @RequestParam(required = false) Double maxPrice,
+                            @RequestParam(required = false) String owner,
+                            @RequestParam(required = false) String address,
+                            @RequestParam(required = false) Integer maxDistance,
+                            @RequestParam(required = false) Integer minRentDays,
+                            @RequestParam(required = false) String startDate,
+                            @RequestParam(required = false) String endDate,
+                            @RequestParam(required = false) String sort) throws IOException {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         Optional <User> userOptional = userService.findById(id);
         model.addAttribute("PageStatus","Rowery użytkownika "+ userOptional.get().getLogin());
-        return getUserBikes(model, userOptional, session);
+        return getUserBikes(model, userOptional, session, search, minPrice, maxPrice, owner, address,
+                maxDistance, minRentDays, startDate, endDate, sort);
     }
 
     @GetMapping("/mine")
-    public String mine (Model model, HttpSession session) {
+    public String mine (Model model, HttpSession session,
+                        @RequestParam(required = false) String search,
+                        @RequestParam(required = false) Double minPrice,
+                        @RequestParam(required = false) Double maxPrice,
+                        @RequestParam(required = false) String owner,
+                        @RequestParam(required = false) String address,
+                        @RequestParam(required = false) Integer maxDistance,
+                        @RequestParam(required = false) Integer minRentDays,
+                        @RequestParam(required = false) String startDate,
+                        @RequestParam(required = false) String endDate,
+                        @RequestParam(required = false) String sort) throws IOException {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         userService.refreshNotifications(session);
         if (session.getAttribute("rentToOthers").toString().equals("false")) {
@@ -118,7 +139,8 @@ public class BikeController {
         }
         Optional <User> userOptional = userService.findById(Long.valueOf(session.getAttribute("id").toString()));
         model.addAttribute("PageStatus","Moje rowery");
-        return getUserBikes(model, userOptional, session);
+        return getUserBikes(model, userOptional, session, search, minPrice, maxPrice, owner, address,
+                maxDistance, minRentDays, startDate, endDate, sort);
     }
 
     @GetMapping
@@ -144,14 +166,15 @@ public class BikeController {
         return "Bikes";
     }
 
-    private String getUserBikes(Model model, Optional<User> userOptional, HttpSession session) {
+    private String getUserBikes(Model model, Optional<User> userOptional, HttpSession session, String search, Double minPrice, Double maxPrice, String owner, String address, Integer maxDistance, Integer minRentDays, String startDate, String endDate, String sort) throws IOException {
         if (userOptional.isEmpty()){
             return "redirect:/bike";
         }
+        Map <Bike, Double> bikeDoubleMap = bikeService.findAllForUserWithFilters(search, minPrice, maxPrice, owner, address, maxDistance, minRentDays, startDate, endDate, sort, userOptional.get().getId());
         userService.refreshNotifications(session);
         //model.addAttribute("rentedBikesIds", rentService.all().stream().map(Rent::getId));
         model.addAttribute("rents", rentService.all());
-        model.addAttribute("bike", bikeService.findAllByOwner(userOptional.get()));
+        model.addAttribute("bike", bikeDoubleMap);
         return "Bikes";
     }
 

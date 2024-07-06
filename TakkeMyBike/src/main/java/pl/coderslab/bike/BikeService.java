@@ -148,5 +148,10 @@ public class BikeService {
         }
         return bikesMap;
     }
+    public Map <Bike, Double> findAllForUserWithFilters (String search, Double minPrice, Double maxPrice, String owner, String address, Integer maxDistance, Integer minRentDays, String startDate, String endDate, String sort, Long id) throws IOException {
+        var map = findBikesWithFilters(search, minPrice, maxPrice, owner, address, maxDistance, minRentDays, startDate, endDate, sort);
+        map.keySet().removeIf(s-> !Objects.equals(s.getOwner().getId(), id));
+        return map;
+    }
 }
 

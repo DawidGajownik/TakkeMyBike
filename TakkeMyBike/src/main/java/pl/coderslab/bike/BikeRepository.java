@@ -14,7 +14,7 @@ public interface BikeRepository extends JpaRepository <Bike, Long> {
     List<Bike> findAllByOwner (User user);
 
     @Query("""
-            select distinct b from Bike b join b.rents r where
+            select distinct b from Bike b left join b.rents r where
             (:search is null or (b.title like %:search% or b.description like %:search%)) and
             (:maxPrice is null or b.pricePerDay <= :maxPrice) and
             (:minPrice is null or b.pricePerDay >= :minPrice) and

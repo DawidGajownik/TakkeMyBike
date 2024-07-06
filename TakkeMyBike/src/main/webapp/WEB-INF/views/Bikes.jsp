@@ -66,10 +66,12 @@
                     <label for="maxPrice">Cena maksymalna:</label>
                     <input type="number" class="form-control" id="maxPrice" name="maxPrice" value="${param.maxPrice}">
                 </div>
-                <div class="form-group">
-                    <label for="owner">Właściciel:</label>
-                    <input type="text" class="form-control" id="owner" name="owner" value="${param.owner}">
-                </div>
+                <c:if test="${PageStatus.equals('Wszystkie rowery')}">
+                    <div class="form-group">
+                        <label for="owner">Właściciel:</label>
+                        <input type="text" class="form-control" id="owner" name="owner" value="${param.owner}">
+                    </div>
+                </c:if>
                 <div class="form-group">
                     <label for="address">Adres:</label>
                     <input type="text" class="form-control" id="address" name="address" value="${param.address}">
@@ -119,8 +121,10 @@
                     <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="distanceDesc">Odległość <i class="fas fa-chevron-down"></i></button>
                     <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="titleAsc">Nazwa <i class="fas fa-chevron-up"></i></button>
                     <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="titleDesc">Nazwa <i class="fas fa-chevron-down"></i></button>
-                    <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="ownerAsc">Właściciel <i class="fas fa-chevron-up"></i></button>
-                    <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="ownerDesc">Właściciel <i class="fas fa-chevron-down"></i></button>
+                    <c:if test="${PageStatus.equals('Wszystkie rowery')}">
+                        <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="ownerAsc">Właściciel <i class="fas fa-chevron-up"></i></button>
+                        <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="ownerDesc">Właściciel <i class="fas fa-chevron-down"></i></button>
+                    </c:if>
                     <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="minRentDaysAsc">Min czas wynajmu <i class="fas fa-chevron-up"></i></button>
                     <button type="submit" class="btn btn-secondary btn-narrow" name="sort" value="minRentDaysDesc">Min czas wynajmu <i class="fas fa-chevron-down"></i></button>
                 </form>

@@ -20,7 +20,7 @@ Celem projektu jest stworzenie aplikacji, która umożliwia osobom prywatnym wyp
 
 - Użytkownicy mogą przeglądać dostępne rowery.
 - Uzytkownicy mogą przeglądać swoje rowery lub konkretnego użytkownika.
-- Możliwość filtrowania wyników według typu roweru, ceny, odległości od podanego adresu itp.
+- Możliwość filtrowania i sortowania wyników według typu roweru, ceny, odległości od podanego adresu itp.
 
 ### Zarządzanie rezerwacjami:
 - Użytkownicy mogą rezerwować rowery na określony czas.
