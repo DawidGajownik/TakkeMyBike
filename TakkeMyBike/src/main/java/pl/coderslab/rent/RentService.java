@@ -1,6 +1,7 @@
 package pl.coderslab.rent;
 
 import org.springframework.stereotype.Service;
+import pl.coderslab.bike.BikeService;
 import pl.coderslab.rating.Rating;
 import pl.coderslab.rating.RatingService;
 import pl.coderslab.user.User;
@@ -21,14 +22,16 @@ public class RentService {
 
     private final RatingService ratingService;
 
+    private final BikeService bikeService;
+
     public List<Rent> myRents (Long id) {
         return rentRepository.findAllByUserId(id);
     }
     public Map<Rent, Rating> rentsWithMyRatings (List <Rent> myRents, Long id) {
-        List <Rating> myRatings = ratingService.getAllByRaterId(id);
         Map <Rent, Rating> myRentsWithMyRatings = new LinkedHashMap<>();
         for (int i = 0; i < myRents.size(); i++) {
             Rent rent = myRents.get(i);
+            rent.setBike(bikeService.processImages(rent.getBike()));
             myRentsWithMyRatings.put(rent, ratingService.myRatingToThisRent(id, rent));
         }
         return myRentsWithMyRatings;
@@ -36,10 +39,11 @@ public class RentService {
     public List<Rent> myOwns (Long id) {
         return rentRepository.findAllByOwnerId(id);
     }
-    public RentService(UserRepository userRepository, RentRepository rentRepository, RatingService ratingService) {
+    public RentService(UserRepository userRepository, RentRepository rentRepository, RatingService ratingService, BikeService bikeService) {
         this.userRepository = userRepository;
         this.rentRepository = rentRepository;
         this.ratingService = ratingService;
+        this.bikeService = bikeService;
     }
 
     public List<Rent>all () {

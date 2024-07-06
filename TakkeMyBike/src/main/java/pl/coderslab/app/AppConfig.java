@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import pl.coderslab.image.ImageConverter;
+import pl.coderslab.image.MainImageConverter;
 import pl.coderslab.rent.DateConverter;
 import pl.coderslab.user.UserConverter;
 
@@ -59,6 +60,7 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addConverter(getDateConverter());
         registry.addConverter(getUserConverter());
         registry.addConverter(getImageConverter());
+        registry.addConverter(getMainImageConverter());
     }
 
     @Bean
@@ -68,6 +70,9 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public ImageConverter getImageConverter() {
         return new ImageConverter();
+    }    @Bean
+    public MainImageConverter getMainImageConverter() {
+        return new MainImageConverter();
     }
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

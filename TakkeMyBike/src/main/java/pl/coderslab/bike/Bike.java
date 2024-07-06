@@ -4,11 +4,15 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import pl.coderslab.address.Address;
+import pl.coderslab.image.Image;
+import pl.coderslab.rent.Rent;
 import pl.coderslab.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,5 +52,11 @@ public class Bike {
 
     @Column(columnDefinition = "LONGTEXT")
     private String base64Image;
+
+    @OneToMany(mappedBy = "bike")
+    private List<Image> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bike")
+    private List<Rent> rents = new ArrayList<>();
 
 }

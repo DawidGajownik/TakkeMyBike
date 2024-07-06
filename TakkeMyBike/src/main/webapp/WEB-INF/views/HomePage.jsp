@@ -73,10 +73,10 @@
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <c:if test="${not empty bike.base64Image}">
-                            <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
+                            <a href="/bike/details/${bike.id}"><img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: 100%;" /></a>
                         </c:if>
                         <div class="card-body">
-                            <h5 class="card-title">${bike.title}</h5>
+                            <h5><a href="/bike/details/${bike.id}">${bike.title}</a></h5>
                             <p class="card-text">${bike.description}</p>
                             <p class="card-text">Cena: ${bike.pricePerDay} PLN/dzień</p>
                             <a href="#" class="btn btn-primary">Wypożycz</a>
@@ -87,5 +87,4 @@
         </div>
     </section>
 </div>
-
 <%@ include file="elements/footer.jsp" %>

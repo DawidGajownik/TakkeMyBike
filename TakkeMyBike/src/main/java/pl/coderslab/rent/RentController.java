@@ -32,16 +32,16 @@ public class RentController {
     private final UserService userService;
     private final RatingService ratingService;
 
-    @GetMapping("/bike/{id}")
-    public String showRentForm(@PathVariable Long id, Model model, HttpSession session) {
+    @GetMapping("/bike/{bikeId}")
+    public String showRentForm(@PathVariable Long bikeId, Model model, HttpSession session) {
         if (!userService.isUserLogged(session)) return "redirect:/login";
-        List<Rent> rents = rentService.getRentsForBikeId(id);
-        Optional<Bike> bikeOptional = bikeService.findById(id);
+        List<Rent> rents = rentService.getRentsForBikeId(bikeId);
+        Optional<Bike> bikeOptional = bikeService.findById(bikeId);
         if (bikeOptional.isEmpty()) {
             model.addAttribute("error", "Rower nie został znaleziony");
             return "redirect:/bike";
         }
-        List<LocalDate> disabledDates = rentService.getDisabledDatesForBike(id);
+        List<LocalDate> disabledDates = rentService.getDisabledDatesForBike(bikeId);
         userService.refreshNotifications(session);
         model.addAttribute("rents", rents);
         model.addAttribute("disabledDates", disabledDates);

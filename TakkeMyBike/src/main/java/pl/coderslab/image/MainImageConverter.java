@@ -5,15 +5,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public class ImageConverter implements Converter <MultipartFile, Image> {
+public class MainImageConverter implements Converter <MultipartFile, byte[]> {
     @Override
-    public Image convert(MultipartFile source) {
-        Image image = new Image();
+    public byte [] convert(MultipartFile source) {
         try {
-            image.setImage(source.getBytes());
+            return source.getBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return image;
     }
 }

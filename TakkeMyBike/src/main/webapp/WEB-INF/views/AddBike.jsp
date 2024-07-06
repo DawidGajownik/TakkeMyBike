@@ -54,8 +54,12 @@
             <form:input path="minRentDays" type="number" class="form-control" id="minRentDays" required="true"/>
         </div>
         <div class="form-group">
-            <label for="image">Zdjęcie:</label>
+            <label for="image">Zdjęcie główne:</label>
             <form:input path="image" type="file" id="image" accept="image/*" class="form-control-file" required="false"/>
+        </div>
+        <div class="form-group">
+            <label for="images">Dodatkowe zdjęcia:</label>
+            <form:input path="images" type="file" id="images" accept="image/*" class="form-control-file" required="false" multiple="true"/>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Dodaj</button>
     </form:form>

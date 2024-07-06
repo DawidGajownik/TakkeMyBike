@@ -57,12 +57,12 @@
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-md-3">
-                                <c:if test="${not empty bike.base64Image}">
-                                    <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
+                                <c:if test="${not empty reservation.getKey().bike.base64Image}">
+                                    <a href="/bike/details/${reservation.getKey().bike.id}"><img src="data:image/jpeg;base64,${reservation.getKey().bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
                                 </c:if>
                             </div>
                             <div class="col-md-5">
-                                <h4><c:out value="${reservation.getKey().bike.title}"/></h4>
+                                <h4><a href="/bike/details/${reservation.getKey().bike.id}">${reservation.getKey().bike.title}</a></h4>
                                 <p><c:out value="${reservation.getKey().bike.description}"/></p>
                                 <p><strong>Data od: </strong><c:out value="${reservation.getKey().startDate}"/></p>
                                 <p><strong>Data do: </strong><c:out value="${reservation.getKey().endDate}"/></p>
@@ -75,7 +75,7 @@
                                         <c:when test="${reservation.getKey().bike.owner.id != id}">
                                             <p><strong>Właściciel: </strong><a href="<c:url value='/user/${reservation.getKey().bike.owner.id}'/>"><c:out value="${reservation.getKey().bike.owner.login}"/></a></p>
                                             <a href="/message/user/${reservation.getKey().bike.owner.id}"><img width="50px" height="50px" title="Napisz wiadomość" src="${pageContext.request.contextPath}/images/message.png" alt="Send Message" class="img-fluid"/></a>
-                                            <c:if test="${reservation.getValue() == null}">
+                                            <c:if test="${reservation.getValue() == null && reservation.getKey().status == 2 && reservation.getKey().endDate.isBefore(now)}">
                                                 <p><a href="<c:url value='/rate/${reservation.getKey().id}'/>">Oceń</a></p>
                                             </c:if>
                                             <c:if test="${reservation.getValue() != null}">
@@ -158,12 +158,12 @@
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <c:if test="${not empty bike.base64Image}">
-                                        <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
+                                    <c:if test="${not empty reservation.bike.base64Image}">
+                                        <a href="/bike/details/${reservation.bike.id}"><img src="data:image/jpeg;base64,${reservation.bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
                                     </c:if>
                                 </div>
                                 <div class="col-md-5">
-                                    <h4><c:out value="${reservation.bike.title}"/></h4>
+                                    <h4><a href="/bike/details/${reservation.bike.id}">${reservation.bike.title}</a></h4>
                                     <p><c:out value="${reservation.bike.description}"/></p>
                                     <p><strong>Data od: </strong><c:out value="${reservation.startDate}"/></p>
                                     <p><strong>Data do: </strong><c:out value="${reservation.endDate}"/></p>
@@ -202,12 +202,12 @@
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <c:if test="${not empty bike.base64Image}">
-                                        <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
+                                    <c:if test="${not empty reservation.bike.base64Image}">
+                                        <a href="/bike/details/${reservation.bike.id}"><img src="data:image/jpeg;base64,${reservation.bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
                                     </c:if>
                                 </div>
                                 <div class="col-md-5">
-                                    <h4><c:out value="${reservation.bike.title}"/></h4>
+                                    <h4><a href="/bike/details/${reservation.bike.id}">${reservation.bike.title}</a></h4>
                                     <p><c:out value="${reservation.bike.description}"/></p>
                                     <p><strong>Data od: </strong><c:out value="${reservation.startDate}"/></p>
                                     <p><strong>Data do: </strong><c:out value="${reservation.endDate}"/></p>
@@ -246,11 +246,11 @@
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <c:if test="${not empty bike.base64Image}">
-                                        <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
-                                    </c:if>                                </div>
+                                    <c:if test="${not empty reservation.bike.base64Image}">
+                                        <a href="/bike/details/${reservation.bike.id}"><img src="data:image/jpeg;base64,${reservation.bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
+                                    </c:if>                                    </div>
                                 <div class="col-md-5">
-                                    <h4><c:out value="${reservation.bike.title}"/></h4>
+                                    <h4><a href="/bike/details/${reservation.bike.id}">${reservation.bike.title}</a></h4>
                                     <p><c:out value="${reservation.bike.description}"/></p>
                                     <p><strong>Data od: </strong><c:out value="${reservation.startDate}"/></p>
                                     <p><strong>Data do: </strong><c:out value="${reservation.endDate}"/></p>
@@ -304,11 +304,11 @@
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <c:if test="${not empty bike.base64Image}">
-                                        <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
-                                    </c:if>                                </div>
+                                    <c:if test="${not empty reservation.bike.base64Image}">
+                                        <a href="/bike/details/${reservation.bike.id}"><img src="data:image/jpeg;base64,${reservation.bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
+                                    </c:if>                                  </div>
                                 <div class="col-md-5">
-                                    <h4><c:out value="${reservation.bike.title}"/></h4>
+                                    <h4><a href="/bike/details/${reservation.bike.id}">${reservation.bike.title}</a></h4>
                                     <p><c:out value="${reservation.bike.description}"/></p>
                                     <p><strong>Data od: </strong><c:out value="${reservation.startDate}"/></p>
                                     <p><strong>Data do: </strong><c:out value="${reservation.endDate}"/></p>
@@ -347,11 +347,12 @@
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <c:if test="${not empty bike.base64Image}">
-                                        <img src="data:image/jpeg;base64,${bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" />
-                                    </c:if>                                </div>
+                                    <c:if test="${not empty reservation.bike.base64Image}">
+                                        <a href="/bike/details/${reservation.bike.id}"><img src="data:image/jpeg;base64,${reservation.bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
+                                    </c:if>
+                                </div>
                                 <div class="col-md-5">
-                                    <h4><c:out value="${reservation.bike.title}"/></h4>
+                                    <h4><a href="/bike/details/${reservation.bike.id}">${reservation.bike.title}</a></h4>
                                     <p><c:out value="${reservation.bike.description}"/></p>
                                     <p><strong>Data od: </strong><c:out value="${reservation.startDate}"/></p>
                                     <p><strong>Data do: </strong><c:out value="${reservation.endDate}"/></p>
@@ -389,10 +390,12 @@
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img src="${pageContext.request.contextPath}/images/rower.jpg" alt="Bike Image" class="img-fluid"/>
+                                    <c:if test="${not empty reservation.getKey().bike.base64Image}">
+                                        <a href="/bike/details/${reservation.getKey().bike.id}"><img src="data:image/jpeg;base64,${reservation.getKey().bike.base64Image}" alt="Obraz roweru"  style="max-width: 100%; height: auto;" /></a>
+                                    </c:if>
                                 </div>
                                 <div class="col-md-5">
-                                    <h4><c:out value="${reservation.getKey().bike.title}"/></h4>
+                                    <h4><a href="/bike/details/${reservation.getKey().bike.id}">${reservation.getKey().bike.title}</a></h4>
                                     <p><c:out value="${reservation.getKey().bike.description}"/></p>
                                     <p><strong>Data od: </strong><c:out value="${reservation.getKey().startDate}"/></p>
                                     <p><strong>Data do: </strong><c:out value="${reservation.getKey().endDate}"/></p>

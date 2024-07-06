@@ -3,12 +3,19 @@ package pl.coderslab.address;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import pl.coderslab.bike.Bike;
+import pl.coderslab.rating.Rating;
+import pl.coderslab.rent.Rent;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -20,9 +27,22 @@ public class AddressService {
     public AddressService(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
-    public void save (Address address) throws IOException {
+    public Address findData (Address address) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + googleMapsApiAddressQuery(address) + "&key=AIzaSyBVEnKq5YxoW7wOQRCj_smmVYfgiIpfK0w");
+        return getAddressData(address, mapper, url);
+    }
+    public Address findDataFromString (String addressString) throws IOException {
+        if (addressString==null||addressString.isEmpty()) {
+            return null;
+        }
+        Address address = new Address();
+        ObjectMapper mapper = new ObjectMapper();
+        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + addressString.replaceAll(" ", "%20") + "&key=AIzaSyBVEnKq5YxoW7wOQRCj_smmVYfgiIpfK0w");
+        return getAddressData(address, mapper, url);
+    }
+
+    private Address getAddressData(Address address, ObjectMapper mapper, URL url) throws IOException {
         JsonNode jsonNode = mapper.readTree(url);
         JsonNode node = jsonNode.get("results").get(0);
         address.setLatitude(node.get("geometry").get("location").get("lat").asDouble());
@@ -64,7 +84,11 @@ public class AddressService {
             }
             i++;
         }
-        addressRepository.save(address);
+        return address;
+    }
+
+    public void save (Address address) throws IOException {
+        addressRepository.save(findData(address));
     }
     public static String googleMapsApiAddressQuery(Address address) throws UnsupportedEncodingException {
         StringBuilder formattedAddress = new StringBuilder();
@@ -89,4 +113,34 @@ public class AddressService {
         }
         return formattedAddress.toString();
     }
+    private Double haversine (Double lat1, Double lon1, Double lat2, Double lon2) {
+        if (lat1==null || lat2==null) {
+            return null;
+        }
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return Math.round(6371.0 * c * 100.0) / 100.0;
+    }
+    public Map<Bike, Double> distanceCalculate (List<Bike> bikes, Address address) throws IOException {
+        Map<Bike,Double> bikesWithDistance = new LinkedHashMap<>();
+        Double addressLatitude = null;
+        Double addressLongitude = null;
+        if (address!=null) {
+            addressLatitude = findData(address).getLatitude();
+            addressLongitude = findData(address).getLongitude();
+        }
+        for (Bike bike : bikes) {
+            Double bikeLatitude = bike.getAddress().getLatitude();
+            Double bikeLongitude = bike.getAddress().getLongitude();
+            bikesWithDistance.put(bike, haversine(addressLatitude, addressLongitude, bikeLatitude, bikeLongitude));
+        }
+        return bikesWithDistance;
+    }
+
 }

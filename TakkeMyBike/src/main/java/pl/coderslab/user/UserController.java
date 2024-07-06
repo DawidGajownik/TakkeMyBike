@@ -56,7 +56,7 @@ public class UserController {
         if (userOptional.isEmpty()) {
             return "redirect:/";
         }
-        model.addAttribute("avgRating", String.format("%.2f", ratingService.myRatings(id).stream().mapToDouble(s -> (double) s.getRating()).average().getAsDouble()));
+        model.addAttribute("avgRating", String.format("%.2f", ratingService.myRatings(id).stream().mapToDouble(s -> (double) s.getRating()).average().orElse(0.0)));
         model.addAttribute("ratings", ratingService.myRatings(id));
         userService.refreshNotifications(session);
         model.addAttribute(userOptional.get());

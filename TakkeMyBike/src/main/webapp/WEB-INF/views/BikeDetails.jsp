@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wypożycz Rower</title>
+    <title>Szczegóły roweru</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .custom-container {
@@ -63,7 +63,7 @@
 <%@ include file="elements/navbar.jsp" %>
 
 <div class="container mt-5">
-    <h2>Wypożycz Rower</h2>
+    <h2>Szczegóły</h2>
     <div class="row">
         <div class="col-md-12">
             <c:if test="${not empty bike.images}">
@@ -86,33 +86,17 @@
             </c:if>
         </div>
     </div>
-    <form:form action="/rent" modelAttribute="rent" method="post">
-        <div class="form-group">
-            <label for="startDate">Data od:</label>
-            <form:input path="startDate" type="date" class="form-control" id="startDate" required="true"/>
-        </div>
-        <div class="form-group">
-            <label for="endDate">Data do:</label>
-            <form:input path="endDate" type="date" class="form-control" id="endDate" required="true"/>
-        </div>
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger" role="alert">
-                    ${error}
+    <div class="mt-3">
+        <c:if test="${bike.owner.id != id}">
+            <div class="col-md-3 align-items-center justify-content-end">
+                <a href="<c:url value='/rent/bike/${bike.id}'/>" class="btn btn-success">Wypożycz</a>
             </div>
         </c:if>
-
-        <input type="hidden" name="bikeId" value="${bike.id}"/>
-        <button type="submit" class="btn btn-success mt-3">Wypożycz</button>
-    </form:form>
-    <div class="mt-3">
-        <h4>Niedostępny:</h4>
-        <ul>
-            <c:forEach var="rent" items="${rents}">
-                <c:if test="${rent.status==2}">
-                    <li>Od: <c:out value="${rent.startDate}"/> Do: <c:out value="${rent.endDate}"/></li>
-                </c:if>
-            </c:forEach>
-        </ul>
+        <c:if test="${bike.owner.id == id}">
+            <div class="col-md-3 align-items-center justify-content-end">
+                <a href="<c:url value='/bike/manage/${bike.id}'/>" class="btn btn-success">Zarządzaj</a>
+            </div>
+        </c:if>
     </div>
 </div>
 <script>

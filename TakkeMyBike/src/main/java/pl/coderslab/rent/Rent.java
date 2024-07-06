@@ -27,7 +27,6 @@ public class Rent {
     private User owner;
 
     @ManyToOne
-    @JoinColumn(name = "bike_id", nullable = false)
     private Bike bike;
     private int status; // 0 = requested 1 = canceled by owner 2 = confirmed 3 = canceled by customer
     private LocalDate startDate;
