@@ -39,49 +39,53 @@ public class AddressService {
         return getAddressData(address, mapper, url);
     }
 
-    private Address getAddressData(Address address, ObjectMapper mapper, URL url) throws IOException {
-        JsonNode jsonNode = mapper.readTree(url);
-        JsonNode node = jsonNode.get("results").get(0);
-        address.setLatitude(node.get("geometry").get("location").get("lat").asDouble());
-        address.setLongitude(node.get("geometry").get("location").get("lng").asDouble());
-        JsonNode addressComponents = node.get("address_components");
-        int i = 0;
-        while (addressComponents.get(i)!=null){
-            int j = 0;
-            while (addressComponents.get(i).get("types").get(j)!=null){
-                String type = addressComponents.get(i).get("types").get(j).toString().replaceAll("\"", "");
-                if (type.equals("administrative_area_level_1")) {
-                    address.setAdministrative_area_level_1(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+    private Address getAddressData(Address address, ObjectMapper mapper, URL url){
+        try {
+            JsonNode jsonNode = mapper.readTree(url);
+            JsonNode node = jsonNode.get("results").get(0);
+            address.setLatitude(node.get("geometry").get("location").get("lat").asDouble());
+            address.setLongitude(node.get("geometry").get("location").get("lng").asDouble());
+            JsonNode addressComponents = node.get("address_components");
+            int i = 0;
+            while (addressComponents.get(i)!=null){
+                int j = 0;
+                while (addressComponents.get(i).get("types").get(j)!=null){
+                    String type = addressComponents.get(i).get("types").get(j).toString().replaceAll("\"", "");
+                    if (type.equals("administrative_area_level_1")) {
+                        address.setAdministrative_area_level_1(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("administrative_area_level_2")) {
+                        address.setAdministrative_area_level_2(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("country")) {
+                        address.setCountry(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("sublocality_level_1  ")) {
+                        address.setDistrict(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("subpremise")) {
+                        address.setApartmentNumber(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("street_number")) {
+                        address.setStreetNumber(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("route")) {
+                        address.setStreet(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("postal_code")) {
+                        address.setPostalCode(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    if (type.equals("locality")) {
+                        address.setCity(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
+                    }
+                    j++;
                 }
-                if (type.equals("administrative_area_level_2")) {
-                    address.setAdministrative_area_level_2(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("country")) {
-                    address.setCountry(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("sublocality_level_1  ")) {
-                    address.setDistrict(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("subpremise")) {
-                    address.setApartmentNumber(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("street_number")) {
-                    address.setStreetNumber(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("route")) {
-                    address.setStreet(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("postal_code")) {
-                    address.setPostalCode(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                if (type.equals("locality")) {
-                    address.setCity(addressComponents.get(i).get("long_name").toString().replaceAll("\"", ""));
-                }
-                j++;
+                i++;
             }
-            i++;
+            return address;
+        } catch (IOException | NullPointerException e) {
+            return null;
         }
-        return address;
     }
 
     public void save (Address address) throws IOException {
@@ -128,7 +132,7 @@ public class AddressService {
         Map<Bike,Double> bikesWithDistance = new LinkedHashMap<>();
         Double addressLatitude = null;
         Double addressLongitude = null;
-        if (address!=null) {
+        if (address!=null && findData(address)!=null) {
             addressLatitude = findData(address).getLatitude();
             addressLongitude = findData(address).getLongitude();
         }
