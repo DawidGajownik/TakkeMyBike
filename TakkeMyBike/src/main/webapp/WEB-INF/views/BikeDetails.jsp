@@ -65,7 +65,7 @@
 <div class="container mt-5">
     <h2>Szczegóły</h2>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <c:if test="${not empty bike.images}">
                 <div class="carousel-container">
                     <c:forEach var="image" items="${bike.images}">
@@ -76,6 +76,9 @@
                 </div>
             </c:if>
         </div>
+        <div class="col-md-4" id="map"></div>
+
+
         <div class="col-md-8">
             <h4><c:out value="${bike.title}"/></h4>
             <p><c:out value="${bike.description}"/></p>
@@ -99,6 +102,27 @@
         </c:if>
     </div>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVEnKq5YxoW7wOQRCj_smmVYfgiIpfK0w&callback=initMap" async defer></script>
+
+<script>
+
+    function initMap() {
+
+        var coords = { lat: ${bike.address.latitude}, lng: ${bike.address.longitude} };
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10, // Powiększenie mapy
+            center: coords // Centrowanie mapy na określonych współrzędnych
+        });
+
+        var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            title: 'Ten rower'
+        });
+    }
+</script>
 <script>
     let slideIndex = 0;
 
