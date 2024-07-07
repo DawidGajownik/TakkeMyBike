@@ -14,6 +14,9 @@
 <div class="container mt-5">
     <h2>Rejestracja</h2>
     <form:form action="/register" modelAttribute="user" method="post">
+
+        <form:hidden path="id" id="id"/>
+
         <div class="form-group">
             <label for="login">Nazwa użytkownika:</label>
             <form:input path="login" class="form-control" id="login" required="true"/>
@@ -22,9 +25,30 @@
             <label for="email">Email:</label>
             <form:input path="email" type="email" class="form-control" id="email" required="true"/>
         </div>
+        <c:if test="${wrngpsw.length()>0}">
+            <div class="alert alert-danger error-message">
+                    ${wrngpsw}
+            </div>
+        </c:if>
+        <c:if test="${id==null}">
+            <div class="form-group">
+                <label for="password">Hasło:</label>
+                <form:input path="password" type="password" class="form-control" id="password" required="true"/>
+            </div>
+        </c:if>
+        <c:if test="${id!=null}">
+            <div class="form-group">
+                <label for="oldPassword">Stare hasło:</label>
+                <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Nowe hasło:</label>
+                <input type="password" class="form-control" id="newPassword" name="newPassword">
+            </div>
+        </c:if>
         <div class="form-group">
-            <label for="password">Hasło:</label>
-            <form:input path="password" type="password" class="form-control" id="password" required="true"/>
+            <label for="confirmPassword">Potwierdź hasło:</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
         </div>
         <div class="form-group">
             <label for="firstName">Imię:</label>

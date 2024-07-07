@@ -24,7 +24,12 @@
                     <p class="card-text"><strong>Email:</strong> <c:out value="${user.email}"/></p>
                     <p class="card-text"><strong>Numer Telefonu:</strong> <c:out value="${user.telephoneNumber}"/></p>
                     <a href="<c:url value='/bike/user/${user.id}'/>" class="btn btn-primary">Lista Rowerów</a>
-                    <a href="<c:url value='/message/user/${user.id}'/>" class="btn btn-secondary">Wyślij Wiadomość</a>
+                    <c:if test="${user.id!=id}">
+                        <a href="<c:url value='/message/user/${user.id}'/>" class="btn btn-secondary">Wyślij Wiadomość</a>
+                    </c:if>
+                    <c:if test="${user.id==id}">
+                        <a href="<c:url value='/edit-profile/${user.id}'/>" class="btn btn-secondary">Zmień dane</a>
+                    </c:if>
                 </div>
             </div>
         </div>

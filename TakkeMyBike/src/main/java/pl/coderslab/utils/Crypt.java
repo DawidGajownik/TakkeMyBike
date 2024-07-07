@@ -9,7 +9,18 @@ import java.util.Base64;
 public class Crypt {
 
     private static SecretKey getKey(String sender, String receiver){
-        byte[] keyBytes = (sender+receiver).getBytes(StandardCharsets.UTF_8);
+        char [] senderArray = sender.toCharArray();
+        char [] receiverArray = receiver.toCharArray();
+        String firstKey = String.valueOf(
+                senderArray[3]+receiverArray[7]+
+                        senderArray[11]+receiverArray[14]+
+                        senderArray[18]+receiverArray[22]+
+                        senderArray[26]+receiverArray[29]+
+                        senderArray[33]+receiverArray[37]+
+                        senderArray[41]+receiverArray[44]+
+                        senderArray[48]+receiverArray[52]+
+                        senderArray[56]+receiverArray[59]);
+        byte[] keyBytes = (firstKey).getBytes(StandardCharsets.UTF_8);
         byte[] keyBytesPadded = new byte[16];
         System.arraycopy(keyBytes, 0, keyBytesPadded, 0, Math.min(keyBytes.length, 16));
         return new SecretKeySpec(keyBytesPadded, "AES");
