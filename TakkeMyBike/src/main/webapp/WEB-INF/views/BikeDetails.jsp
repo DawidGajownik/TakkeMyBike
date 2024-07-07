@@ -9,14 +9,6 @@
     <title>Szczegóły roweru</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .custom-container {
-            padding-top: 50px;
-            padding-left: 50px; /* Adjust left padding */
-            padding-right: 50px; /* Adjust right padding */
-        }
-        .custom-filter-form {
-            padding-top: 80px;
-        }
         .carousel-container {
             position: relative;
             max-width: 100%;
