@@ -89,11 +89,11 @@
     <form:form action="/rent" modelAttribute="rent" method="post">
         <div class="form-group">
             <label for="startDate">Data od:</label>
-            <form:input path="startDate" type="date" class="form-control" id="startDate" required="true"/>
+            <form:input path="startDate" type="date" class="form-control" id="startDate" required="true" min="${now}"/>
         </div>
         <div class="form-group">
             <label for="endDate">Data do:</label>
-            <form:input path="endDate" type="date" class="form-control" id="endDate" required="true"/>
+            <form:input path="endDate" type="date" class="form-control" id="endDate" required="true" disabled="true"/>
         </div>
         <c:if test="${not empty error}">
             <div class="alert alert-danger" role="alert">
@@ -115,6 +115,22 @@
         </ul>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var startDateInput = document.getElementById('startDate');
+        var endDateInput = document.getElementById('endDate');
+
+        startDateInput.addEventListener('change', function() {
+            var startDate = startDateInput.value;
+            if (startDate) {
+                endDateInput.removeAttribute('disabled');
+                endDateInput.setAttribute('min', startDate);
+            } else {
+                endDateInput.setAttribute('disabled', 'true');
+            }
+        });
+    });
+</script>
 <script>
     let slideIndex = 0;
 

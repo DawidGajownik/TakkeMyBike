@@ -46,6 +46,7 @@ public class RentController {
         }
         List<LocalDate> disabledDates = rentService.getDisabledDatesForBike(bikeId);
         userService.refreshNotifications(session);
+        model.addAttribute("now", LocalDate.now());
         model.addAttribute("rents", rents);
         model.addAttribute("disabledDates", disabledDates);
         model.addAttribute("bike", bikeOptional.get());
