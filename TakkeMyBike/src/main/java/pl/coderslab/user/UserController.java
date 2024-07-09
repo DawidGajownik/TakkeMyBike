@@ -41,8 +41,12 @@ public class UserController {
                        @RequestParam(required = false) String oldPassword,
                        @RequestParam(required = false) String newPassword,
                        @RequestParam(required = false) String confirmPassword){
-        Long loggedUserId = Long.valueOf(session.getAttribute("id").toString());
-        String oldHashedPassword = userService.findById(loggedUserId).get().getPassword();
+        Long loggedUserId;
+        String oldHashedPassword = null;
+        if (session.getAttribute("id")!=null){
+            loggedUserId = Long.valueOf(session.getAttribute("id").toString());
+            oldHashedPassword = userService.findById(loggedUserId).get().getPassword();
+        }
         if (oldPassword == null) {
             if (!user.getPassword().equals(confirmPassword)){
                 session.setAttribute("wrngpsw", "Hasła się nie zgadzają");
@@ -101,6 +105,7 @@ public class UserController {
         if (!userId.equals(loggedUserId)){
             return "redirect:/edit-profile/"+loggedUserId;
         }
+        userService.refreshNotifications(session);
         model.addAttribute("edit", true);
         model.addAttribute("user", userService.findById(userId));
         return "Register";

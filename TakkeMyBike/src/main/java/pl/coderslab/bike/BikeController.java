@@ -50,14 +50,11 @@ public class BikeController {
     public String update (Model model, @PathVariable Long id, HttpSession session) {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         Optional <Bike> bikeOptional = bikeService.findById(id);
-        if (session.getAttribute("id") == null) {
-            return "redirect:/bike/"+id;
-        }
-        if (session.getAttribute("rentToOthers").toString().equals("false")) {
-            return "redirect:/bike/"+id;
-        }
         if (bikeOptional.isEmpty()) {
-            return "redirect:/bike/"+id;
+            return "redirect:/";
+        }
+        if (session.getAttribute("id") == null || session.getAttribute("rentToOthers").toString().equals("false") || !session.getAttribute("id").toString().equals(bikeOptional.get().getOwner().getId().toString())) {
+            return "redirect:/bike/details/"+id;
         }
         userService.refreshNotifications(session);
         model.addAttribute("bike", bikeOptional.get());
@@ -89,6 +86,7 @@ public class BikeController {
         if (Long.valueOf(session.getAttribute("id").toString()).equals(id)) {
             return "redirect:/bike/mine";
         }
+        userService.refreshNotifications(session);
         Optional <User> userOptional = userService.findById(id);
         model.addAttribute("PageStatus","Rowery użytkownika "+ userOptional.get().getLogin());
         return getUserBikes(model, userOptional, session, search, minPrice, maxPrice, owner, address,

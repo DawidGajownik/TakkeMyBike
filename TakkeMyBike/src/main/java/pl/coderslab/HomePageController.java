@@ -26,11 +26,11 @@ public class HomePageController {
     private final UserService userService;
 
     @GetMapping()
-    public String HomePage (Model model, Bike bike, HttpSession session) {
+    public String HomePage (Model model, HttpSession session) {
         if (session.getAttribute("id")!=null) {
             userService.refreshNotifications(session);
         }
-        model.addAttribute("bike", bikeService.findAll());
+        model.addAttribute("bike", bikeService.findAll().stream().limit(bikeService.findAll().size()/3*3).toList());
         return "HomePage";
     }
     @GetMapping("/logout")

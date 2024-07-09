@@ -5,7 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moje Rezerwacje</title>
+    <title>
+        <c:if test="${mydashboard!=null}">
+            Zarządzaj wynajmem
+        </c:if>
+        <c:if test="${mydashboard==null}">
+            Moje Rezerwacje
+        </c:if></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .lower-div {
@@ -22,7 +28,12 @@
 <%@ include file="elements/navbar.jsp" %>
 
 <div class="container mt-5">
-    <h2>Moje Rezerwacje</h2>
+    <h2><c:if test="${mydashboard!=null}">
+        Zarządzaj wynajmem
+    </c:if>
+        <c:if test="${mydashboard==null}">
+            Moje Rezerwacje
+        </c:if></h2>
 
     <!-- Zakładki -->
     <ul class="nav nav-tabs" id="reservationTabs" role="tablist">

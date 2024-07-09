@@ -41,6 +41,9 @@ public class RentController {
             model.addAttribute("error", "Rower nie został znaleziony");
             return "redirect:/bike";
         }
+        if(session.getAttribute("id").toString().equals(bikeOptional.get().getOwner().getId().toString())) {
+            return "redirect:/bike/details/"+bikeId;
+        }
         List<LocalDate> disabledDates = rentService.getDisabledDatesForBike(bikeId);
         userService.refreshNotifications(session);
         model.addAttribute("rents", rents);
@@ -112,7 +115,6 @@ public class RentController {
         userService.refreshNotifications(session);
         model.addAttribute("ratings",rentRatingMap);
         model.addAttribute("now", LocalDate.now());
-        model.addAttribute("owner", false);
         model.addAttribute("reservations", rentRatingMap);
         return "Reservations";
     }
@@ -134,7 +136,7 @@ public class RentController {
         var myOwns = rentService.myOwns(loggedUserId).stream().sorted((s1,s2) -> s2.getId().compareTo(s1.getId())).toList();
         Map <Rent, Rating> rentRatingMap = rentService.rentsWithMyRatings(myOwns, loggedUserId);
         model.addAttribute("now", LocalDate.now());
-        model.addAttribute("owner", true);
+        model.addAttribute("mydashboard", true);
         model.addAttribute("reservations", rentRatingMap);
         return "Reservations";
     }
@@ -142,6 +144,9 @@ public class RentController {
     public String cancel (@PathVariable Long id, HttpSession session) {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         Rent rent = rentService.get(id);
+        if (!session.getAttribute("id").toString().equals(rent.getUser().getId().toString())){
+            return "redirect:/";
+        }
         User owner = rent.getOwner();
         owner.setHasRentNotifications(true);
         userService.save(owner);
@@ -154,6 +159,9 @@ public class RentController {
     public String accept (@PathVariable Long id, HttpSession session) {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         Rent rentProcessed = rentService.get(id);
+        if (!session.getAttribute("id").toString().equals(rentProcessed.getOwner().getId().toString())){
+            return "redirect:/";
+        }
         List <LocalDate> datesProcessed = rentService.getDatesFromRent(rentProcessed);
         List <Rent> rentList = rentService.getRentsForBikeId(rentProcessed.getBike().getId());
         for (int i = 0; i < rentList.size(); i++) {
@@ -180,6 +188,9 @@ public class RentController {
     public String deny (@PathVariable Long id, HttpSession session) {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         Rent rent = rentService.get(id);
+        if (!session.getAttribute("id").toString().equals(rent.getOwner().getId().toString())){
+            return "redirect:/";
+        }
         rent.setStatus(1);
         User user = rent.getUser();
         user.setHasReservationNotifications(true);

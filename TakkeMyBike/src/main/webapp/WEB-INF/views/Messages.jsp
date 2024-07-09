@@ -80,7 +80,7 @@
         </div>
         <c:if test="${not empty message}">
             <div class="col-md-9">
-                <h2>Wiadomości z <c:out value="${message.receiver.login}"/></h2>
+                <h2>Wiadomości z <a href="/user/${message.receiver.id}"><c:out value="${message.receiver.login}"/></a></h2>
                 <div class="chat-container" id="chat-container">
                     <c:forEach var="messages" items="${messages}">
                         <div class="message ${messages.sender.id == id ? 'sent' : 'received'}">

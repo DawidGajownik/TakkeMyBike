@@ -3,8 +3,8 @@
            uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">
-        <img src="${pageContext.request.contextPath}/images/Logo.png" alt="TakkeMyBike!" width="35%" height="35%">
+    <a class="navbar-brand" href="/" style="width: 10%">
+        <img src="${pageContext.request.contextPath}/images/Logo.png" alt="TakkeMyBike!" width="100%" height="100%">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -56,6 +56,9 @@
                     <c:if test="${hasMessageNotification}">
                         <span class="notification-dot"></span>
                     </c:if>
+                </li>
+                <li class="nav-item position-relative">
+                    <a class="nav-link" href="/edit-profile/${id}">Zmień dane</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Wyloguj</a>

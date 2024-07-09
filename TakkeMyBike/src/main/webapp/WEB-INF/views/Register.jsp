@@ -1,18 +1,30 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form"
-           uri="http://www.springframework.org/tags/form" %><!DOCTYPE html>
+           uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rejestracja - TakkeMyBike!</title>
+    <title> <c:if test="${id!=null}">
+        Zmiana danych
+    </c:if>
+        <c:if test="${id==null}">
+            Rejestracja - TakkeMyBike!
+        </c:if> </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <%@ include file="elements/navbar.jsp" %>
 
 <div class="container mt-5">
-    <h2>Rejestracja</h2>
+    <h2><c:if test="${id!=null}">
+        Zmiana danych
+    </c:if>
+        <c:if test="${id==null}">
+            Rejestracja
+        </c:if></h2>
     <form:form action="/register" modelAttribute="user" method="post">
 
         <form:hidden path="id" id="id"/>
@@ -74,7 +86,13 @@
             <form:checkbox path="rentFromOthers" class="form-check-input" id="rentFromOthers"/>
             <label class="form-check-label" for="rentFromOthers">Chcę wypożyczać rowery od innych osób</label>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Zarejestruj się</button>
+        <button type="submit" class="btn btn-primary mt-3">
+            <c:if test="${id!=null}">
+                Zmień dane
+            </c:if>
+            <c:if test="${id==null}">
+                Zarejestruj się
+            </c:if></button>
     </form:form>
 </div>
 
