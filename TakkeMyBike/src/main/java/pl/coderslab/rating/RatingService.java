@@ -5,6 +5,7 @@ import pl.coderslab.rent.Rent;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -14,6 +15,9 @@ public class RatingService {
 
     public RatingService(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;
+    }
+    public Optional<Rating> getByIdAndRaterId (Long id, Long raterId) {
+        return ratingRepository.findByIdAndRaterId(id, raterId);
     }
     public void addRating (Rating rating) {
         ratingRepository.save(rating);

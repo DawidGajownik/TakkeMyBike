@@ -25,6 +25,10 @@ public class RatingController {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         Long raterId = Long.valueOf(session.getAttribute("id").toString());
         Rent rent = rentService.get(id);
+        LocalDate now = LocalDate.now();
+        if (!(rent.getStatus()==2&&rent.getEndDate().isBefore(now)) || !(rent.getUser().getId().equals(raterId)||rent.getOwner().getId().equals(raterId)) || ratingService.getByIdAndRaterId(id, Long.valueOf(session.getAttribute("id").toString())).isPresent()){
+            return "redirect:/";
+        }
         Rating rating = new Rating();
         if (raterId.equals(rent.getOwner().getId())) {
             rating.setRated(rent.getUser());
