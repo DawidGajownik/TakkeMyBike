@@ -21,9 +21,9 @@
             <div class="form-group">
                 <label for="email">Email:</label>
                 <form:input path="email" name = "email" class="form-control" id="email" required="true"/><br>
-                <c:if test="${msg.length()>0}">
+                <c:if test="${msglogin.length()>0}">
                     <div class="alert alert-danger error-message">
-                            ${msg}
+                            ${msglogin}
                     </div>
                 </c:if>
             </div>

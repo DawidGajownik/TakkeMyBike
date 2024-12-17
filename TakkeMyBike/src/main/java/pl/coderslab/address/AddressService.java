@@ -3,6 +3,7 @@ package pl.coderslab.address;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import pl.coderslab.APIConfig;
 import pl.coderslab.bike.Bike;
 
 import javax.transaction.Transactional;
@@ -20,13 +21,14 @@ import java.util.Map;
 public class AddressService {
 
     private final AddressRepository addressRepository;
+    private final String APIKEY = APIConfig.getApiKey();
 
     public AddressService(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
     public Address findData (Address address) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + googleMapsApiAddressQuery(address) + "&key=AIzaSyBVEnKq5YxoW7wOQRCj_smmVYfgiIpfK0w");
+        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + googleMapsApiAddressQuery(address) + "&key="+APIKEY);
         return getAddressData(address, mapper, url);
     }
     public Address findDataFromString (String addressString) throws IOException {
@@ -35,7 +37,7 @@ public class AddressService {
         }
         Address address = new Address();
         ObjectMapper mapper = new ObjectMapper();
-        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + addressString.replaceAll(" ", "%20") + "&key=AIzaSyBVEnKq5YxoW7wOQRCj_smmVYfgiIpfK0w");
+        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + addressString.replaceAll(" ", "%20") + "&key="+APIKEY);
         return getAddressData(address, mapper, url);
     }
 

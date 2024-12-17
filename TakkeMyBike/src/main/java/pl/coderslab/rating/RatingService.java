@@ -16,8 +16,8 @@ public class RatingService {
     public RatingService(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;
     }
-    public Optional<Rating> getByIdAndRaterId (Long id, Long raterId) {
-        return ratingRepository.findByIdAndRaterId(id, raterId);
+    public Optional<Rating> getByRentIdAndRaterId (Long rentId, Long raterId) {
+        return ratingRepository.findByRentIdAndRaterId(rentId, raterId);
     }
     public void addRating (Rating rating) {
         ratingRepository.save(rating);
@@ -30,5 +30,8 @@ public class RatingService {
     }
     public List <Rating> myRatings(Long id) {
         return ratingRepository.findAllByRatedId(id);
+    }
+    public Rating getById(Long id) {
+        return ratingRepository.findById(id).orElse(null);
     }
 }

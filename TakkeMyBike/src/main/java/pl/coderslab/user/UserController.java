@@ -115,7 +115,7 @@ public class UserController {
     public String loginPost(@ModelAttribute User user, Model model, HttpSession session){
         Optional <User> userOptional = userService.findByEmail(user.getEmail());
         if(userOptional.isEmpty()){
-            model.addAttribute("msg", "Nie znaleziono użytkownika o podanym emailu");
+            model.addAttribute("msglogin", "Nie znaleziono użytkownika o podanym emailu");
             model.addAttribute("user", new User());
             return "Login";
         }

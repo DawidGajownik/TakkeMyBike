@@ -26,7 +26,10 @@ public class RatingController {
         Long raterId = Long.valueOf(session.getAttribute("id").toString());
         Rent rent = rentService.get(id);
         LocalDate now = LocalDate.now();
-        if (!(rent.getStatus()==2&&rent.getEndDate().isBefore(now)) || !(rent.getUser().getId().equals(raterId)||rent.getOwner().getId().equals(raterId)) || ratingService.getByIdAndRaterId(id, Long.valueOf(session.getAttribute("id").toString())).isPresent()){
+        if (!(rent.getStatus()==2&&rent.getEndDate().isBefore(now)) ||
+                !(rent.getUser().getId().equals(raterId)||rent.getOwner().getId().equals(raterId)) ||
+                ratingService.getByRentIdAndRaterId(id, Long.valueOf(session.getAttribute("id").toString())).isPresent())
+        {
             return "redirect:/";
         }
         Rating rating = new Rating();
@@ -46,6 +49,9 @@ public class RatingController {
         if (!userService.isUserLogged(session)) return "redirect:/login";
         rating.setDate(LocalDate.now());
         ratingService.addRating(rating);
-        return "redirect:/";
+        if (rating.getRated().getId().equals(ratingService.getById(rating.getId()).getRent().getOwner().getId())) {
+            return "redirect:/rent";
+        }
+        return "redirect:/rent/my-dashboard";
     }
 }

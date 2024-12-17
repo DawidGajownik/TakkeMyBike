@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.coderslab.bike.Bike;
 import pl.coderslab.bike.BikeService;
 import pl.coderslab.user.UserService;
@@ -40,6 +41,9 @@ public class HomePageController {
         session.removeAttribute("rentFromOthers");
         session.removeAttribute("message");
         session.removeAttribute("error");
+        session.removeAttribute("msg");
+        session.removeAttribute("msgpsw");
+        session.removeAttribute("msglogin");
         return "redirect:/";
     }
 }
